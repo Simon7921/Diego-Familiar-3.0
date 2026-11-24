@@ -1080,6 +1080,9 @@ html[data-mode] .nav button .ico{width:22px!important;height:22px!important}
       <p class="bt-small">Los PDF contienen gráficos y estadísticas agregadas. No se convierten curvas dibujadas en lecturas individuales ni se usan como datos de proyección. El PDF se analiza en este teléfono, sin enviarlo a Firebase. Para procesarlo, el navegador necesita cargar la biblioteca PDF.js mediante internet.</p>
       <label for="aiPdfFile">Seleccionar informe PDF</label><input id="aiPdfFile" type="file" accept=".pdf,application/pdf" aria-label="Seleccionar informe PDF de LibreView">
       <button type="button" class="btn btn-secondary" id="aiPdfRead">Leer y revisar informe</button>
+      <button type="button" class="btn btn-secondary" id="aiPdfKnown" style="margin-top:8px;width:100%">Cargar resumen del informe ya revisado · 9–22 nov 2026</button>
+      <button type="button" class="btn btn-secondary" id="aiPdfManual" style="margin-top:8px;width:100%">Introducir resumen de otro PDF manualmente</button>
+      <p class="bt-small">Si falla la lectura automática, puedes guardar un resumen histórico sin inventar mediciones individuales.</p>
       <p class="bt-small" id="aiPdfStatus" role="status">Ningún informe PDF analizado.</p>
       <div id="aiPdfReview" hidden>
         <p class="bt-small">Revisa los datos extraídos antes de guardarlos. Deja en blanco lo que no figure claramente en el PDF.</p>
@@ -1231,7 +1234,7 @@ html[data-mode] .nav button .ico{width:22px!important;height:22px!important}
 <script src="app.js"></script>
 <script src="bitacora.js?v=30"></script>
 <script src="diego-ai.js?v=31"></script>
-<script src="diego-ai-context.js?v=33"></script>
+<script src="diego-ai-context.js?v=34"></script>
 <script src="firebase-config.js"></script>
 <script type="module" src="diego-familiar.js?v=30"></script>
 <script src="sage-dashboard.js?v=18"></script>
