@@ -31,7 +31,7 @@ if (!config || !config.projectId || !config.apiKey || !config.appId) {
     docs.forEach(item=>{const m=item.data(), row=document.createElement('div');row.className='family-member';
       const name=document.createElement('span');name.textContent=(m.email||m.uid)+' · '+(m.role||'');row.append(name);
       if(m.role!=='owner'){const b=document.createElement('button');b.type='button';b.className='btn btn-secondary';b.textContent='Revocar';
-        b.onclick=()=>run(async()=>{if(!confirm('¿Quitar el acceso a '+m.email+'?'))return;await deleteDoc(doc(db,'families',familyId,'members',item.id));await listMembers();message('Acceso revocado.');});row.append(b);}
+        b.onclick=()=>run(async()=>{if(!confirm('¿Quitar el acceso a '+m.email+' y cancelar su invitación anterior?'))return;const batch=writeBatch(db);batch.delete(doc(db,'families',familyId,'invites',String(m.email||'').toLowerCase()));batch.delete(doc(db,'families',familyId,'members',item.id));await batch.commit();await listMembers();message('Acceso e invitación revocados.');});row.append(b);}
       container.append(row);});
   }
   function safeError(err){console.error('Diego Familiar:',err?.code||'error');return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/email-already-in-use':'Ese correo ya tiene una cuenta.','auth/weak-password':'La contraseña no cumple los requisitos.','permission-denied':'Sin permisos para este espacio. Verifica el correo y la invitación.','unavailable':'Sin conexión. Revisa internet.'})[err?.code]||'No se completó la operación. Revisa la configuración y los permisos.';}

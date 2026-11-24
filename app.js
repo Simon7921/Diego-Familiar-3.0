@@ -113,14 +113,14 @@
   }
 
   /* ---------------- Navegación ---------------- */
-  var SCREENS = ["inicio", "alimentos", "recetas", "favoritos", "pauta", "perfil", "historial", "bitacora"];
-  var NAVOF = { inicio: "inicio", favoritos: "inicio", perfil: "inicio", alimentos: "alimentos", recetas: "recetas", pauta: "pauta", historial: "pauta", bitacora: "bitacora" };
+  var SCREENS = ["inicio", "alimentos", "recetas", "favoritos", "pauta", "perfil", "historial", "bitacora", "diegoai"];
+  var NAVOF = { inicio: "inicio", favoritos: "inicio", perfil: "inicio", alimentos: "alimentos", recetas: "recetas", pauta: "pauta", historial: "pauta", bitacora: "bitacora", diegoai: "diegoai" };
   function show(name, push) {
     if (SCREENS.indexOf(name) < 0) name = "inicio";
     ui.screen = name; $("boot").hidden = true; document.documentElement.classList.toggle("fit", name === "inicio");
     SCREENS.forEach(function (k) { var el = $("s-" + k); el.hidden = k !== name; if (k === name) { el.classList.remove("enter"); void el.offsetWidth; el.classList.add("enter"); } });
     document.querySelectorAll(".nav button").forEach(function (b) { if (b.dataset.go === NAVOF[name]) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
-    ({ inicio: renderInicio, alimentos: renderFoods, recetas: renderRecipes, favoritos: renderFavs, pauta: enterPauta, perfil: renderPerfil, historial: renderHist, bitacora: function () { if (window.DiegoBitacora) window.DiegoBitacora.render(); } })[name]();
+    ({ inicio: renderInicio, alimentos: renderFoods, recetas: renderRecipes, favoritos: renderFavs, pauta: enterPauta, perfil: renderPerfil, historial: renderHist, bitacora: function () { if (window.DiegoBitacora) window.DiegoBitacora.render(); }, diegoai: function () { if(window.DiegoAI)window.DiegoAI.render(); } })[name]();
     if (push !== false && location.hash !== "#" + name) { try { history.pushState(null, "", "#" + name); } catch (e) {} }
     window.scrollTo(0, 0);
   }
@@ -173,6 +173,9 @@
       else status.textContent = "Seleccionada: " + label + " · Puedes cambiarla cuando quieras";
     }
     var m = meal(plate.meal), tot = plateTotal(), n = plate.items.length;
+    var uxMeal=document.getElementById('uxMealName'),uxRatio=document.getElementById('uxRatioText'),uxCarbs=document.getElementById('uxCarbCount'),uxFoods=document.getElementById('uxFoodCount'),uxMode=document.getElementById('uxMealMode');
+    if(uxMeal){uxMeal.textContent=m.name;uxRatio.textContent=C.ratioForMeal(plate.meal)==null?'Sin insulina para esta comida':'Ratio 1:'+C.ratioForMeal(plate.meal);uxCarbs.innerHTML=fmt(tot)+' <small>g HC</small>';uxFoods.textContent=n+' '+(n===1?'alimento':'alimentos');uxMode.textContent=mealSelectionMode==='manual'?'Elegida por ti':'Según horario';}
+
     var ratioEl = $("homeMealRatio"), activeMealRatio = C.ratioForMeal(plate.meal);
     if (ratioEl) { ratioEl.querySelector("strong").textContent = m.name + " · " + (activeMealRatio == null ? "Sin insulina" : "1:" + activeMealRatio); }
     animateNum($("total"), tot, " g HC");
